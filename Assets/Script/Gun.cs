@@ -9,6 +9,8 @@ public class Gun : MonoBehaviour
     public Camera fpsCam;
     public ParticleSystem shootingEffect;
     public GameObject impactEffect;
+    public float fireRate = 15f;
+    public float nextTimeToFire = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +21,8 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Fire")){
+        if(Input.GetButton("Fire") && Time.time >= nextTimeToFire){
+            nextTimeToFire = Time.time +1f/fireRate;
             Shoot();
         }
     }
