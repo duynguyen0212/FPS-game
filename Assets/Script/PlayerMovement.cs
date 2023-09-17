@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance = 0.4f;
     public Transform groundCheck;
     public LayerMask groundMask;
-    bool isGrounded;
+    public bool isGrounded;
     public float jumpHeight = 3f;
 
     // Start is called before the first frame update

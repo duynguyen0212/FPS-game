@@ -62,7 +62,7 @@ public class Gun : MonoBehaviour
         currentAmmo--;
         RaycastHit hit;
         if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range)){
-            //Debug.Log(hit.transform.name);
+            Debug.Log(hit.transform.name);
             
 
             GameObject effect = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));

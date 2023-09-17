@@ -33,12 +33,17 @@ public class Crosshair : MonoBehaviour
             // Calculate the distance to the hit object
             float distanceToHitObject = hit.distance;
             if(distanceToHitObject< 25f && hit.collider.CompareTag("Environment")){
-                currentSize = Mathf.Lerp(currentSize, minSize, Time.deltaTime*speed);
+                currentSize = Mathf.Lerp(currentSize, maxSize, Time.deltaTime*speed);
                 ChangeColors(objectColor);
             }
             else{
                 currentSize = Mathf.Lerp(currentSize, 90f, Time.deltaTime*speed);
                 ChangeColors(originalColor);
+            }
+
+            if(hit.collider.CompareTag("Enemy")){
+                currentSize = Mathf.Lerp(currentSize, minSize, Time.deltaTime*speed);
+                ChangeColors(enemyColor);
             }
 
             
