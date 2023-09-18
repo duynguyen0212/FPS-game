@@ -18,7 +18,6 @@ public class Enemy : MonoBehaviour
     private float nextAttackTime;
     private bool isCoolingDown => Time.time < nextAttackTime;    
     private void StartCoolDown(float cooldownTime) => nextAttackTime = Time.time + cooldownTime;
-    public PlayerMovement p1;
 
     void Start()
     {
@@ -74,10 +73,10 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        StartCoroutine(TakeDmgAni());
         if(currentHealth <= 0){
             StartCoroutine(DeathCo());
         }
+        StartCoroutine(TakeDmgAni());
     }
 
     private IEnumerator DeathCo(){
@@ -101,11 +100,5 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         enemyAni.SetBool("takingDmg", false);
         isTakingDmg = false;
-    }
-
-    private void OnCollisionEnter(Collision other) {
-        if(other.gameObject.tag == "Player"){
-            p1.gotHurt();
-        }
     }
 }

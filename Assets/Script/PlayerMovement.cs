@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,8 +15,6 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
     public bool isGrounded;
     public float jumpHeight = 3f;
-
-    public Image hurtScreen;
     public float alphaValue = 0.4f;
 
     // Start is called before the first frame update
@@ -47,12 +44,5 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity *Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-    }
-
-
-    public void gotHurt(){
-        Debug.Log("Player is being attacked");
-    }
-
-    
+    }    
 }

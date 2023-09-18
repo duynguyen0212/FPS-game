@@ -16,7 +16,7 @@ public class PauseMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Backspace)){
+        if(Input.GetKeyDown(KeyCode.Escape)){
             if(isPause){
                 ResumeGame();
             }
@@ -31,11 +31,13 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
         isPause = true;
+        Cursor.lockState = CursorLockMode.None;
     }
     public void ResumeGame(){
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         isPause = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void Quit(){

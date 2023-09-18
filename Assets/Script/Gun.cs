@@ -19,7 +19,6 @@ public class Gun : MonoBehaviour
     private bool reloading;
     public Animator animator;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -29,19 +28,21 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!PauseMenu.isPause){
 
-        if(reloading){
-            return;
-        }
-        if(currentAmmo <=0){
-            StartCoroutine(Reload());
-            return;
-        }
+            if(reloading){
+                return;
+            }
+            if(currentAmmo <=0){
+                StartCoroutine(Reload());
+                return;
+            }
 
-        if(Input.GetButton("Fire") && Time.time >= nextTimeToFire){
-            nextTimeToFire = Time.time +1f/fireRate;
-            Shoot();
-            
+            if(Input.GetButton("Fire") && Time.time >= nextTimeToFire){
+                nextTimeToFire = Time.time +1f/fireRate;
+                Shoot();
+                
+            }
         }
 
     }
