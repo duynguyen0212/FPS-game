@@ -18,11 +18,14 @@ public class Gun : MonoBehaviour
 
     private bool reloading;
     public Animator animator;
+    public AudioSource shootingSound;
+    public AudioSource reloadingSound;
 
     // Start is called before the first frame update
     void Start()
     {
         currentAmmo = maxAmmo;
+        shootingSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -52,6 +55,7 @@ public class Gun : MonoBehaviour
         animator.SetBool("Reloading", true);
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = maxAmmo;
+        reloadingSound.Play();
         animator.SetBool("Reloading", false);
         yield return new WaitForSeconds(.25f);
         reloading = false;
@@ -60,6 +64,7 @@ public class Gun : MonoBehaviour
 
     void Shoot(){
         shootingEffect.Play();
+        shootingSound.Play();
         currentAmmo--;
         
         RaycastHit hit;
