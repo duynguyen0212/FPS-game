@@ -59,6 +59,7 @@ public class Enemy : MonoBehaviour
         navMeshAgent.SetDestination(transform.position);
         transform.LookAt(player);
         StartCoroutine(AttackCo());
+        StartCoolDown(1f);
     }
 
     private IEnumerator AttackCo(){
@@ -75,6 +76,7 @@ public class Enemy : MonoBehaviour
         currentHealth -= damage;
         if(currentHealth <= 0){
             StartCoroutine(DeathCo());
+            return;
         }
         StartCoroutine(TakeDmgAni());
     }

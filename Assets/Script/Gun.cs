@@ -46,6 +46,11 @@ public class Gun : MonoBehaviour
                 Shoot();
                 
             }
+
+            if(Input.GetKeyDown(KeyCode.R)){
+                StartCoroutine(Reload());
+                return;
+            }
         }
 
     }

@@ -22,7 +22,6 @@ public class PauseMenu : MonoBehaviour
             }
             else{
                 PauseGame();
-                Debug.Log("pause");
             }
         }
     }
