@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-
+    public int maxHealth, currentHealth;
     public float chaseRange = 20f; // Range at which the enemy starts chasing the player.
     public float attackRange = 4f; // Range at which the enemy attacks the player.
     public float chaseSpeed = 5f; // Chase movement speed.
@@ -13,14 +13,16 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private NavMeshAgent navMeshAgent;
     public Animator enemyAni;
-    public bool attackAni;
+    public bool attackAni, isTakingDmg;
     public bool playerInSightRange, playerInAttackRange;
     private float nextAttackTime;
     private bool isCoolingDown => Time.time < nextAttackTime;    
     private void StartCoolDown(float cooldownTime) => nextAttackTime = Time.time + cooldownTime;
+    public PlayerMovement p1;
 
     void Start()
     {
+        currentHealth = maxHealth;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
@@ -29,7 +31,7 @@ public class Enemy : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (distanceToPlayer <= chaseRange && distanceToPlayer > attackRange)
+        if (distanceToPlayer <= chaseRange && distanceToPlayer > attackRange && isTakingDmg == false)
         {
             ChasePlayer();
         }
@@ -39,15 +41,9 @@ public class Enemy : MonoBehaviour
         }
         if(distanceToPlayer > chaseRange){
             enemyAni.SetBool("Walking", false);
+            navMeshAgent.speed = 0;
+            navMeshAgent.SetDestination(transform.position);
         }
-
-        // playerInSightRange = Physics.CheckSphere(transform.position, chaseRange, whatIsPlayer);
-        // playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
-
-        // if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-        // if (playerInAttackRange && attackAni == false) AttackPlayer();
-        // if (!playerInSightRange && !playerInAttackRange) enemyAni.SetBool("Walking", false);
-        
     }
 
     void ChasePlayer()
@@ -73,5 +69,43 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(1.1f);
         enemyAni.SetBool("Attacking", false);
         attackAni = false;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        StartCoroutine(TakeDmgAni());
+        if(currentHealth <= 0){
+            StartCoroutine(DeathCo());
+        }
+    }
+
+    private IEnumerator DeathCo(){
+        attackAni = true;
+        enemyAni.SetTrigger("Death");
+        enemyAni.SetBool("Walking", false);
+        enemyAni.SetBool("Attacking", false);
+        navMeshAgent.isStopped = true;
+        yield return new WaitForSeconds(1.1f);
+        Destroy(gameObject);
+        
+    }
+
+    private IEnumerator TakeDmgAni(){
+        enemyAni.SetBool("takingDmg", true);
+        isTakingDmg = true;
+        enemyAni.SetBool("Walking", false);
+        navMeshAgent.speed = 0;
+        navMeshAgent.SetDestination(transform.position);
+        enemyAni.SetBool("Attacking", false);
+        yield return new WaitForSeconds(.5f);
+        enemyAni.SetBool("takingDmg", false);
+        isTakingDmg = false;
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        if(other.gameObject.tag == "Player"){
+            p1.gotHurt();
+        }
     }
 }
